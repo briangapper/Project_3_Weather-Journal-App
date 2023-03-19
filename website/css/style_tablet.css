@@ -1,0 +1,23 @@
+/* ----------------------------------------- */
+/* 1.) MEDIA QUERY - Tablet
+/* ----------------------------------------- */
+@media (min-width: 480px) and (max-width: 850px){
+
+    #title {
+        letter-spacing: 2px;
+        font-size: 3.5vw;
+    }
+
+    main {
+        font-size: 20px;
+    }
+
+    p {
+        text-align: justify;
+    }
+
+    .input {
+        font-size: 20px;
+    }
+
+}
