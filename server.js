@@ -37,19 +37,14 @@ function listening(){
 // Initialize all route with a callback function
 app.get('/getWeatherData', getWeatherData);
 
-app.get('/:universalURL', throwError);
-
 app.post('/postWeatherData', postWeatherData);
+
+app.get('/:universalURL', throwError);
 
 // Callback function to complete GET '/getWeatherData'
 function getWeatherData(req, res){
     res.send(projectData);
 }
-
-// Callback function to complete GET '/:universalURL'
-function throwError(req, res){
-    res.send('404 URL NOT FOUND');
- };
 
 // Callback function to complete POST '/postWeatherData'
 function postWeatherData(req, res){
@@ -58,15 +53,20 @@ function postWeatherData(req, res){
 
     newEntry = {
 
+        zip: data.zip,
         temperature: data.temperature,
-        date: 'hello',
-        // feeling: 
+        date: data.date,
+        feeling: data.feeling 
 
     }
 
     projectData.push(newEntry)
-    console.log('server: ', projectData)
-    console.log('data: ', data)
-    
+
+    console.log('server projectData (array): ', projectData)
+    console.log('server data (object): ', data)
 }
 
+// Callback function to complete GET '/:universalURL'
+function throwError(req, res){
+    res.send('404 URL NOT FOUND');
+ };
