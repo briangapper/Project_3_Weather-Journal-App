@@ -126,6 +126,7 @@ async function getWeatherDataServer(url = ''){
         });
 
         let weatherDataServer = await res_fetch.json();
+
         weatherDataArray = weatherDataServer;
         console.log('4.1) weatherDataArray: ', weatherDataArray)
 
