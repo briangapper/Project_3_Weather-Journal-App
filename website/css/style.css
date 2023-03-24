@@ -38,6 +38,15 @@ h2 {
     font-size: 28px;
 }
 
+#entries > * {
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+span {
+    font-weight: normal;
+}
+
 /* ----------------------------------------- */
 /* 2.) STYLE Header
 /* ----------------------------------------- */
@@ -129,6 +138,14 @@ p {
 #holder_entry {
     height: 35vh;
     margin: 5vh 10% 0;
+}
+
+#entries {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 0.5em;
+    overflow: hidden;
 }
 
 /* ----------------------------------------- */

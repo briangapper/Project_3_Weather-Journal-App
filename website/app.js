@@ -148,10 +148,9 @@ async function updateUI(){
 
     try {
 
-        document.getElementById('date').innerHTML = weatherDataObject['date'];
-        document.getElementById('zip').innerHTML = weatherDataObject['zip'];
-        document.getElementById('temp').innerHTML = weatherDataObject['temperature'];
-        document.getElementById('feeling').innerHTML = weatherDataObject['feeling'];
+        createNewEntry();
+
+
 
     } catch(error) {
 
@@ -162,4 +161,74 @@ async function updateUI(){
         console.log('5.X) END function updateUI')
 
     }
+}
+
+/* 5.1) function createNewEntry */
+function createNewEntry(){
+
+    let entries = document.getElementById('entries');
+    let allChildren = entries.getElementsByTagName('*').length;
+
+    if(allChildren > 6){
+
+        
+
+    }
+
+    let counter = 0;
+    counter += 1;
+
+    let entry_div = document.createElement('div');
+    entry_div.setAttribute('id', 'entry_div')
+
+    // Zip
+    let zip_div = document.createElement('div');
+    zip_div.setAttribute('id', 'zip_div');
+    zip_div.innerHTML = 'Zip: ';
+
+    let zip = document.createElement('span');
+    zip.setAttribute('id', 'zip');
+    zip.innerHTML = weatherDataObject['zip'];
+
+    zip_div.appendChild(zip);
+    entry_div.appendChild(zip_div);
+
+    // Date
+    let date_div = document.createElement('div');
+    date_div.setAttribute('id', 'date_div');
+    date_div.innerHTML = 'Date: ';
+
+    let date = document.createElement('span')
+    date.setAttribute('id', 'date');
+    date.innerHTML = weatherDataObject['date'];
+
+    date_div.appendChild(date);
+    entry_div.appendChild(date_div);
+
+    // Temp
+    let temp_div = document.createElement('div');
+    temp_div.setAttribute('id', 'temp_div');
+    temp_div.innerHTML = 'Temperature: ';
+
+    let temp = document.createElement('span');
+    temp.setAttribute('id', 'temp')
+    temp.innerHTML = weatherDataObject['temperature'] + '&deg';
+
+    temp_div.appendChild(temp);
+    entry_div.appendChild(temp_div);
+
+    // Feeling
+    let feeling_div = document.createElement('div');
+    feeling_div.setAttribute('id', 'feeling_div')
+    feeling_div.innerHTML = 'Feeling: ';
+
+    let feeling = document.createElement('span');
+    feeling.setAttribute('id', 'feeling')
+    feeling.innerHTML = weatherDataObject['feeling'];
+
+    feeling_div.appendChild(feeling);
+    entry_div.appendChild(feeling_div);
+
+    // Add entry_div to HTML parent DIV
+    document.getElementById('entries').appendChild(entry_div);
 }
