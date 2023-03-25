@@ -1,4 +1,4 @@
-// Setup empty JS object to act as endpoint for all routes
+// Setup empty JS array to act as endpoint for all routes
 const projectData = [];
 
 // Express to run server and routes
@@ -7,14 +7,14 @@ const express = require('express');
 // Start up an instance of app
 const app = express();
 
-/* Dependencies */
+// Request body-parser module
 const bodyParser = require('body-parser');
 
-/* Middleware*/
-//Here we are configuring express to use body-parser as middle-ware.
+// Configure Express to use body-parser as middle-ware
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
 app.use(bodyParser.json());
 
 // Cors for cross origin allowance
@@ -26,15 +26,14 @@ app.use(express.static('website'));
 
 // Spin up the server
 const port = 8000;
-
-const server = app.listen(port, listening);
+app.listen(port, listening);
 
 // Callback to debug
 function listening(){
     console.log(`Server running on localhost: ${port}`);
 }
 
-// Initialize all route with a callback function
+// Initialize all routes with a callback function
 app.get('/getWeatherData', getWeatherData);
 
 app.post('/postWeatherData', postWeatherData);
@@ -58,12 +57,13 @@ function postWeatherData(req, res){
         date: data.date,
         feeling: data.feeling 
 
-    }
+    };
 
-    projectData.push(newEntry)
+    projectData.push(newEntry);
+    console.log('server projectData: ', projectData);
 
-    console.log('server projectData (array): ', projectData)
-    console.log('server data (object): ', data)
+    let message = '3.1) server postWeatherData: Post successul';
+    res.send({message});
 }
 
 // Callback function to complete GET '/:universalURL'
