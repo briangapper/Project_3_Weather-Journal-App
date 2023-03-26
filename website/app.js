@@ -1,13 +1,13 @@
-console.log('0) START');
+// Personal API Key for OpenWeatherMapAPI
+const baseURL = 'http://api.openweathermap.org/data/2.5/weather?q=';
+const apiKey = '&appid=42a3827b1945b5f64876ecf6a45dda62';
+const units = '&units=metric';
 
 // Define port and server paths
 const port = 8000;
 const pathGetData = `http://localhost:${port}/getWeatherData`;
 const pathPostData = `http://localhost:${port}/postWeatherData`;
-
-// Personal API Key for OpenWeatherMapAPI
-const baseURL = 'http://api.openweathermap.org/data/2.5/weather?q='
-const apiKey = '&appid=42a3827b1945b5f64876ecf6a45dda62'
+const dataStorage = [];
 
 // Event listener to add function to existing HTML DOM element
 document.getElementById('generate_btn').addEventListener('click', performAction);
@@ -24,10 +24,11 @@ async function performAction(e){
 
     try{
 
-        const data = await getWeatherDataAPI(baseURL, zip, apiKey, feeling);
+        const data = await getWeatherDataAPI(baseURL, zip, apiKey, units, feeling);
         await postWeatherDataServer(pathPostData, data);
         const weatherDataServer = await getWeatherDataServer(pathGetData);
-        await updateUI(weatherDataServer);
+        dataStorage.push(weatherDataServer);
+        await updateUI(dataStorage);
     
     } catch(error) {
 
@@ -41,21 +42,20 @@ async function performAction(e){
 }
 
 /* 2) async function getWeatherDataAPI: request temperature from API */
-async function getWeatherDataAPI(baseURL, zip, apiKey, feeling){
+async function getWeatherDataAPI(baseURL, zip, apiKey, units, feeling){
 
     console.log('2) START function getWeatherDataAPI');
 
     try {
 
-        let response = await fetch (baseURL + zip + apiKey);
+        let response = await fetch (baseURL + zip + apiKey + units);
         let weatherDataAPI = await response.json();
-
-        // getting temperature and converting to rounded celsius
-        let temp = (weatherDataAPI['main'].temp - 273.15).toFixed(2);
 
         // generate new Date
         let d = new Date();
         let date = d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
+
+        let temp = weatherDataAPI['main'].temp;
 
         let weatherDataObject = {
             zip: zip,
@@ -144,17 +144,17 @@ async function getWeatherDataServer(url = ''){
 }
 
 /* 5) async function updateUI: update UI with passed data array from server */
-async function updateUI(weatherDataServer = []){
+async function updateUI(dataStorage = []){
 
     console.log('5) START function updateUI');
 
     try {
 
-        let weatherDataClient = checkArrayLength(weatherDataServer);
+        let weatherDataUI = checkArrayLength(dataStorage);
 
         removeAllEntries();
           
-        weatherDataClient.forEach(entry => {
+        weatherDataUI.forEach(entry => {
             createNewEntry(entry);
         });
 
@@ -170,21 +170,21 @@ async function updateUI(weatherDataServer = []){
 }
 
 /* 5.1) function checkArrayLength: check length of array, update the UI with only the last 6 new objects */
-function checkArrayLength(weatherDataServer = []){
+function checkArrayLength(dataStorage = []){
 
-    console.log(`5.1) checkArrayLength: ${weatherDataServer.length}`);
+    console.log(`5.1) checkArrayLength: ${dataStorage.length}`);
 
-    let weatherDataClient = [];
+    let weatherDataUI = [];
     let maxEntries = 6;
 
-    if(weatherDataServer.length >= maxEntries){
+    if(dataStorage.length >= maxEntries){
 
-        weatherDataClient = weatherDataServer.slice(-maxEntries);
-        return weatherDataClient;
+        weatherDataUI = dataStorage.slice(-maxEntries);
+        return weatherDataUI;
 
     } else {
 
-        return weatherDataServer;
+        return dataStorage;
 
     }
 }
